@@ -89,6 +89,12 @@ EOF
 
 chmod +x /usr/bin/disk-discovery
 
+cat > /etc/zabbix/zabbix_agentd.d/mysql.conf << EOF
+# mysql status information
+UserParameter=mysql.status[*],/usr/bin/mysqladmin -u$1 -p$2 extended-status 2>/dev/null | awk '/ $3 /{print $$4}'
+UserParameter=mysql.processlist[*],/usr/bin/mysqladmin -u$1 -p$2 processlist
+EOF
+
 # restart the zabbix agent
 service zabbix-agent restart
 chkconfig zabbix-agent on
