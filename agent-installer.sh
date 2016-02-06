@@ -24,7 +24,7 @@ rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
 cat > /etc/yum.repos.d/zabbix.repo << EOF
 [zabbix]
 name=Zabbix Repository Server
-baseurl=http://repo.zabbix.com/zabbix/2.0/rhel/\$releasever/\$basearch
+baseurl=http://repo.zabbix.com/zabbix/2.4/rhel/\$releasever/\$basearch
 enabled=1
 gpgcheck=1
 EOF
