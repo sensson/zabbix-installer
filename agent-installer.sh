@@ -100,5 +100,10 @@ EOF
 rm -f /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
 
 # restart the zabbix agent
-service zabbix-agent restart
-chkconfig zabbix-agent on
+if grep -q -i 'release 6' /etc/redhat-release; then
+	service zabbix-agent restart
+	chkconfig zabbix-agent on
+else
+	systemctl restart zabbix-agent
+	systemctl enable zabbix-agent
+fi
