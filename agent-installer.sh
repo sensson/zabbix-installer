@@ -17,17 +17,12 @@ if [ -z "$LISTEN_PORT" ]; then
 	LISTEN_PORT=10050
 fi
 
-# import the right key
-rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
-
-# set up the repository
-cat > /etc/yum.repos.d/zabbix.repo << EOF
-[zabbix]
-name=Zabbix Repository Server
-baseurl=http://repo.zabbix.com/zabbix/2.4/rhel/\$releasever/\$basearch
-enabled=1
-gpgcheck=1
-EOF
+# restart the zabbix agent
+if grep -q -i 'release 6' /etc/redhat-release; then
+	rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/6/x86_64/zabbix-release-3.4-1.el6.noarch.rpm
+else
+	rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm
+fi
 
 # install zabbix-agent
 yum install -y zabbix-agent
