@@ -14,17 +14,12 @@ read LISTEN_PORT
 
 # if LISTEN_PORT is empty, set it to 10050
 if [ -z "$LISTEN_PORT" ]; then
-	LISTEN_PORT=10050
+    LISTEN_PORT=10050
 fi
 
-# restart the zabbix agent
-if grep -q -i 'release 6' /etc/redhat-release; then
-	rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/6/x86_64/zabbix-release-3.4-1.el6.noarch.rpm
-else
-	rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm
-fi
+. /etc/os-release
 
-# install zabbix-agent
+rpm -ivh "http://repo.zabbix.com/zabbix/4.0/rhel/${VERSION_ID}/x86_64/zabbix-release-4.0-2.el${VERSION_ID}.noarch.rpm"
 yum install -y zabbix-agent
 
 # set up the configuration file
@@ -96,9 +91,9 @@ rm -f /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
 
 # restart the zabbix agent
 if grep -q -i 'release 6' /etc/redhat-release; then
-	service zabbix-agent restart
-	chkconfig zabbix-agent on
+    service zabbix-agent restart
+    chkconfig zabbix-agent on
 else
-	systemctl restart zabbix-agent
-	systemctl enable zabbix-agent
+    systemctl restart zabbix-agent
+    systemctl enable zabbix-agent
 fi
